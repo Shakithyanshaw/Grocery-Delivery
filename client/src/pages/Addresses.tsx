@@ -1,4 +1,4 @@
-const Adresses = () => {
+const Addresses = () => {
   return (
     <div>
       <h1>Address</h1>
@@ -6,4 +6,4 @@ const Adresses = () => {
   );
 };
 
-export default Adresses;
+export default Addresses;
