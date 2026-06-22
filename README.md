@@ -335,29 +335,6 @@ Users can:
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome.
-
-### Steps
-
-```bash
-# Fork Repository
-
-# Create New Branch
-git checkout -b feature/new-feature
-
-# Commit Changes
-git commit -m "Added new feature"
-
-# Push Changes
-git push origin feature/new-feature
-```
-
-Create a Pull Request after pushing your changes.
-
----
-
 ## 👨‍💻 Developer
 
 ### Shaw (Shakithyan)
