@@ -12,7 +12,7 @@ import {
   UserIcon,
   XIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -30,6 +30,20 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleSearch = (e: React.SubmitEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
+  const handleLogout = () => {
+    setUserMenuOpen(false);
+    navigate('/');
+  };
+
   return (
     <div>
       <nav className="bg-white stick top-0 z-50 border-b border-app-border">
@@ -52,7 +66,10 @@ const Navbar = () => {
               </Link>
             </div>
             {/*Search*/}
-            <form className="hidden sm:flex flex-1 max-w-sm text-xs sm:text-sm">
+            <form
+              onSubmit={handleSearch}
+              className="hidden sm:flex flex-1 max-w-sm text-xs sm:text-sm"
+            >
               <div className="relative w-full">
                 <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
                 <input
@@ -169,7 +186,10 @@ const Navbar = () => {
                         )}
                         {user && (
                           <div className="border-t border-app-border pt-1">
-                            <button className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors">
+                            <button
+                              onClick={handleLogout}
+                              className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors"
+                            >
                               <LogOut size={16} />
                               Log oUT
                             </button>
