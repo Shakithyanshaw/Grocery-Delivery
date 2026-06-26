@@ -104,7 +104,7 @@ export const footerData = {
   ],
 
   bottom: {
-    copyright: '© 2026 Greatstack. All rights reserved.',
+    copyright: '© 2026 Shakithyan. All rights reserved.',
     links: [
       { label: 'Privacy Policy', href: '#' },
       { label: 'Terms of Service', href: '#' },
