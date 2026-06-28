@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import type { Product } from '../types';
 import { categoriesData, dummyProducts } from '../assets/assets';
-import { Home } from 'lucide-react';
+import { ChevronDown, Home, SlidersHorizontal } from 'lucide-react';
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -78,6 +78,30 @@ const Products = () => {
                 <p className="text-sm text-app-text-light mt-0.5">
                   {products.length} products found
                 </p>
+              </div>
+              <div className="flex flex-col lg:items-center gap-3">
+                {/* Mobile filter toggle */}
+                <button
+                  onClick={() => setMobileFiltersOpen(true)}
+                  className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm bg-white rounded-xl border border-app-border hover:bg-app-cream transition-colors"
+                >
+                  <SlidersHorizontal className="size-4" /> Filters
+                </button>
+                {/* Sort */}
+                <div className="relative">
+                  <select
+                    value={sort}
+                    onChange={(e) => updateFilter('sort', e.target.value)}
+                    className="appearance-none pl-3 pr-8 py-2 text-sm bg-white rounded-xl border border-app-border focus:border-app-green outline-none cursor-pointer"
+                  >
+                    <option value="">Newest</option>
+                    <option value="price_asc">Price: Low → High</option>
+                    <option value="price_desc">Price: High → Low</option>
+                    <option value="rating">Top Rated</option>
+                    <option value="name">A → Z</option>
+                  </select>
+                  <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-light pointer-events-none" />
+                </div>
               </div>
             </div>
           </main>
