@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import type { Product } from '../types';
 import { categoriesData, dummyProducts } from '../assets/assets';
+import { Home } from 'lucide-react';
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,8 +48,41 @@ const Products = () => {
     fetchProducts();
   }, [category, organic, sort, page, minPrice, maxPrice]);
   return (
-    <div>
-      <h1>Welcome to the Products Page!</h1>
+    <div className="min-h-screen bg-app-cream">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm text-app-text-light mb-6">
+          <Link to="/" className="hover:text-app-green transition-colors">
+            <Home className="size-4" />
+          </Link>
+          <span>/</span>
+          <span className="text-app-green font-medium">
+            {activeCategory ? activeCategory.name : 'All Products'}
+          </span>
+        </nav>
+        <div className="flex gap-8 xl:gap-10">
+          {/* Sidebar - Desktop */}
+          <aside className="hidden lg:block w-64 shrink-0">
+            <div className="bg-white rounded-2xl p-4 sticky top-24">
+              <p>Filter</p>
+            </div>
+          </aside>
+          {/* Main Content */}
+          <main className="flex-1">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h1 className="text-2xl font-semibold text-app-green">
+                  {activeCategory ? activeCategory.name : 'All Products'}
+                </h1>
+                <p className="text-sm text-app-text-light mt-0.5">
+                  {products.length} products found
+                </p>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
     </div>
   );
 };
