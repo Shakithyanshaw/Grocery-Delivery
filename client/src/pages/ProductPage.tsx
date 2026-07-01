@@ -1,9 +1,10 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import type { Product } from '../types';
 import { useEffect, useState } from 'react';
+import type { Product } from '../types';
 import { dummyProducts } from '../assets/assets';
 import Loading from '../components/Loading';
+import { ArrowLeftIcon, HomeIcon } from 'lucide-react';
 
 const ProductPage = () => {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || '$';
@@ -20,7 +21,6 @@ const ProductPage = () => {
     setLoading(true);
     setLocalQuantity(1);
     window.scrollTo(0, 0);
-
     const product = dummyProducts.find((p) => p._id === id);
     setProduct(product!);
     setRelatedProducts(dummyProducts.filter((p) => p._id !== id));
@@ -31,13 +31,46 @@ const ProductPage = () => {
   if (!product) return null;
 
   const cartItem = items.find((item) => item.product._id === product._id);
-  const inCart = !cartItem;
+  const inCart = !!cartItem;
+
   const displayQuantity = inCart ? cartItem.quantity : localQuantity;
 
   const categoryLabel = product.category.replace(/-/g, ' ');
   return (
-    <div>
-      <h1>Welcome to the Product Page!</h1>
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm text-app-text-light mb-6">
+          <Link to="/" className="hover:text-app-green transition-colors">
+            <HomeIcon className="size-4" />
+          </Link>
+          <span>/</span>
+          <Link
+            to="/products"
+            className="hover:text-app-green transition-colors"
+          >
+            Products
+          </Link>
+          <span>/</span>
+          <Link
+            to={`/products?category=${product.category}`}
+            className="hover:text-app-green transition-colors capitalize"
+          >
+            {categoryLabel}
+          </Link>
+          <span>/</span>
+          <span className="text-app-green font-medium truncate max-w-50">
+            {product.name}
+          </span>
+        </nav>
+        {/* Back button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-6 flex items-center gap-1.5 text-sm text-app-text-light hover:text-app-green transition-colors"
+        >
+          <ArrowLeftIcon className="size-4" /> Back
+        </button>
+      </div>
     </div>
   );
 };
