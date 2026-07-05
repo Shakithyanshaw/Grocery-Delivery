@@ -53,6 +53,11 @@ const OrderTracking = () => {
             {order!.status}
           </span>
         </div>
+        <div className="grid lg-grid-cols-3 gap-6">
+          {/* Left side - Timmeline + Map Area */}
+          <div className="lg:col-span-2 space-y-6">{/* OTP card */}</div>
+          {/* Right side - Order Details */}
+        </div>
       </div>
     </div>
   );
