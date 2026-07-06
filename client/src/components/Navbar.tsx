@@ -155,7 +155,7 @@ const Navbar = () => {
                           </Link>
                         )}
                         {user && (
-                          <Link to="/address" className="dropdown-link">
+                          <Link to="/addresses" className="dropdown-link">
                             <MapPinIcon size={16} />
                             Address
                           </Link>
