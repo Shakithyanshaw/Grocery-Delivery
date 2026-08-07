@@ -7,6 +7,8 @@ import {
 } from 'react';
 import type { User } from '../types';
 import { useNavigate } from 'react-router-dom';
+import api from '../config/api';
+import { toast } from 'react-hot-toast/headless';
 
 interface AuthContextType {
   user: User | null;
@@ -37,6 +39,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setLoading(false);
   }, []);
+
+  const login = async (email: string, password: string) => {
+    try {
+      const { data } = await api.post('/auth/login', { email, password });
+      setUser(data.user);
+      setToken(data.token);
+      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('auth_user', JSON.stringify(data.user));
+      toast.success('Login successful');
+      navigate('/');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message);
+    }
+  };
 
   return <AuthContext.Provider value={}>{children}</AuthContext.Provider>;
 }
