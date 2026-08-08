@@ -15,13 +15,10 @@ import {
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const user: any = {
-    name: 'John Doe',
-    email: 'john@example.com',
-    isAdmin: true,
-  };
+  const { user, logout } = useAuth();
 
   const { cartCount, setIsCartOpen } = useCart();
 
@@ -38,6 +35,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
+    logout();
     setUserMenuOpen(false);
     navigate('/');
   };
@@ -189,7 +187,7 @@ const Navbar = () => {
                               className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors"
                             >
                               <LogOut size={16} />
-                              Log oUT
+                              Log out
                             </button>
                           </div>
                         )}
