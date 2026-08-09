@@ -47,7 +47,7 @@ const FlashDeals = () => {
             {products.map(
               (product) =>
                 product.stock > 0 && (
-                  <ProductCard key={product._id} product={product} />
+                  <ProductCard key={product.id} product={product} />
                 ),
             )}
           </div>
