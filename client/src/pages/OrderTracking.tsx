@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import type { Order } from '../types';
 import { useEffect, useState } from 'react';
-import { dummyDashboardOrdersData } from '../assets/assets';
 import Loading from '../components/Loading';
 import { ArrowLeftIcon, MapPinIcon, PhoneIcon } from 'lucide-react';
 import OrderOTP from '../components/OrderTracking/OrderOTP';
@@ -27,6 +26,36 @@ const OrderTracking = () => {
       .catch(() => navigate('/orders'))
       .finally(() => setLoading(false));
   }, [id, navigate]);
+
+  // live location every 10 seconds
+  useEffect(() => {
+    if (!order || ['Delivered', 'Cancelled', 'Placed'].includes(order.status))
+      return;
+
+    const fetchLocation = async () => {
+      try {
+        const { data } = await api.get(`/orders/${id}/location`);
+        if (
+          data.liveLocation?.lat &&
+          data.liveLocation?.lng &&
+          data.liveLocation.updatedAt
+        ) {
+          setLiveLocation({
+            lat: data.liveLocation.lat,
+            lng: data.liveLocation.lng,
+          });
+        }
+
+        // Also update order status if it changed
+        if (data.status && data.status !== order.status) {
+          setOrder((prev) => (prev ? { ...prev, status: data.status } : prev));
+        }
+      } catch {}
+    };
+    fetchLocation();
+    const interval = setInterval(fetchLocation, 10000);
+    return () => clearInterval(interval);
+  }, [id, order?.status]);
 
   if (loading) return <Loading />;
   if (!order) return null;
