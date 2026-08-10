@@ -15,13 +15,14 @@ import CheckoutReview from '../components/Checkout/CheckoutReview';
 import CheckoutPayment from '../components/Checkout/CheckoutPayment';
 import api from '../config/api';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || '$';
 
   const { items, cartTotal, clearCart } = useCart();
-  const { user } = { user: { addresses: dummyAddressData } };
+  const { user } = useAuth();
 
   const [step, setStep] = useState('address');
   const [loading, setLoading] = useState(false);
