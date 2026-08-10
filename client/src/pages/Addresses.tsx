@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import type { Address } from '../types';
-import { dummyAddressData } from '../assets/assets';
 import { MapPinIcon, PlusIcon } from 'lucide-react';
 import Loading from '../components/Loading';
 import AddressCard from '../components/AddressCard';
@@ -113,9 +112,19 @@ const Addresses = () => {
   };
 
   useEffect(() => {
-    setAddresses(dummyAddressData);
-    setTimeout(() => setLoading(false), 1000);
+    api
+      .get('/addresses')
+      .then(({ data }) => {
+        setAddresses(data.addresses);
+      })
+      .catch((error: any) => {
+        toast.error(error.response?.data?.message || error?.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
   return (
     <div className="min-h-screen bg-app-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
