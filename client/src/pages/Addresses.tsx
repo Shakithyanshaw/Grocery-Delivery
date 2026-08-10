@@ -6,7 +6,8 @@ import Loading from '../components/Loading';
 import AddressCard from '../components/AddressCard';
 import AddressForm from '../components/AddressForm';
 import { useAuth } from '../context/AuthContext';
-import { error } from 'console';
+import { toast } from 'react-hot-toast';
+import api from '../config/api';
 
 const Addresses = () => {
   const { updateUser } = useAuth();
@@ -75,8 +76,27 @@ const Addresses = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    try {
+      const coords = await getLocation();
+      const payload = { ...form, ...coords };
+
+      if (editingId) {
+        const { data } = await api.put(`/addresses/${editingId}`, payload);
+        setAddresses(data.addresses);
+        updateUser({ addresses: data.addresses });
+        toast.success('Address updated!');
+      } else {
+        const { data } = await api.post(`/addresses`, payload);
+        setAddresses(data.addresses);
+        updateUser({ addresses: data.addresses });
+        toast.success('Address added!');
+      }
+      resetForm();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error.message || 'Failed');
+    }
   };
 
   const onEditHandler = (add: Address) => {
