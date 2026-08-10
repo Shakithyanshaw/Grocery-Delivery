@@ -32,20 +32,35 @@ export default function AdminOrders() {
       setPartners(data.partners.filter((p: DeliveryPartner) => p.isActive));
     } catch {}
   };
+
   useEffect(() => {
     fetchOrders();
     fetchPartners();
   }, []);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    console.log(id, newStatus);
+    try {
+      await api.put(`/orders/${id}/status`, { status: newStatus });
+      toast.success('Order status updated');
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to update status');
+    }
   };
 
   const handleAssign = async () => {
     if (!assignModal || !selectedPartner) return;
-    toast.success('Delivery partner assigned!');
-    setAssignModal(null);
-    setSelectedPartner('');
+    try {
+      await api.put(`/admin/orders/${assignModal}/assign`, {
+        partnerId: selectedPartner,
+      });
+      toast.success('Delivery partner assigned!');
+      setAssignModal(null);
+      setSelectedPartner('');
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to assign partner');
+    }
   };
 
   const statusOptions = [
