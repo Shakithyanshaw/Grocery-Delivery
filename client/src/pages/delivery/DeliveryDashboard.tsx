@@ -142,11 +142,21 @@ export default function DeliveryDashboard() {
   const handleCancel = async () => {
     if (!cancelModal) return;
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await axios.put(
+        `${API_URL}/delivery/my-deliveries/${cancelModal}/cancel`,
+        { reason: cancelReason },
+        getAuthHeaders(),
+      );
+      toast.success('Delivery cancelled');
       setCancelModal(null);
       setCancelReason('');
-    }, 1000);
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || 'Failed');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
