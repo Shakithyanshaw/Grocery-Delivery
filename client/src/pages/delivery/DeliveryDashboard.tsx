@@ -106,7 +106,17 @@ export default function DeliveryDashboard() {
   }, [orders, tracking]);
 
   const handleUpdateStatus = async (orderId: string, status: string) => {
-    console.log(orderId, status);
+    try {
+      await axios.put(
+        `${API_URL}/delivery/my-deliveries/${orderId}/status`,
+        { status },
+        getAuthHeaders(),
+      );
+      toast.success(`Status updated to ${status}`);
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || 'Failed');
+    }
   };
 
   const handleComplete = async () => {
